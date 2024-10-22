@@ -18,24 +18,22 @@ public class ServerUDP {
         server.send(packet2);
     }
 
+    public static String getDate(String format){
+        java.util.Date date = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
     public static void main(String[] args) {
-        boolean serverReady = false;
         try (DatagramSocket server = new DatagramSocket(2345, InetAddress.getLocalHost())) {
             while (true) {
                 DatagramPacket dp = ServerUDP.receive(server);
                 String str = new String(dp.getData(), 0, dp.getLength());
-
-                if (str.equals("Hello serveur RX302")) {
-                    serverReady = true;
-                    System.out.println("Nouveau Client");
-                    System.out.print("Reçu de la part de " + dp.getAddress() + " sur le port " + dp.getPort() + " : ");
-                    System.out.println(str);
-                    ServerUDP.send(server, "Serveur RX302 ready", dp);
-                } else if (serverReady) {
-                    ServerUDP.send(server, "pong", dp);
-                    System.out.println(
-                            "Reçu de la part de " + dp.getAddress() + " sur le port " + dp.getPort() + " : " + str);
-                }
+                System.out.println("Nouveau Client");
+                System.out.print("Reçu de la part de " + dp.getAddress() + " sur le port " + dp.getPort() + " : ");
+                System.out.println(str);
+                ServerUDP.send(server, getDate("hh:mm:ss"), dp);
+        
             }
         } catch (IOException e) {
             e.printStackTrace();
