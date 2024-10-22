@@ -35,12 +35,25 @@ public class ServerUDP {
                     case "connect":
                         System.out.println("Nouveau Client");
                         System.out.print("Reçu de la part de " + dp.getAddress() + " sur le port " + dp.getPort() + " : "); 
-                         ServerUDP.send(server, "Choisissez exo : 1, 2, 3, 4, 5", dp);
+                        ServerUDP.send(server, "Choisissez exo : 1, 2, 3, 4, 5", dp);
+                        break;
                     case "1":
                         ServerUDP.send(server, getDate("hh:mm:ss"), dp);
                         break;
                     case "2":
-                        System.out.println("SUCE");
+                        System.out.println("exo 2");
+                        ServerUDP.send(server, "exo2", dp);
+                        while(true){
+                            DatagramPacket dp2 = ServerUDP.receive(server);
+                            String t1prim = getDate("hh:mm:ss:SSS");
+                            String str2 = new String(dp2.getData(), 0, dp2.getLength());
+                            if(str2.equals("fin exo 2")){
+                                break; 
+                            }
+
+                            ServerUDP.send(server, str2+";"+t1prim +";"+getDate("hh:mm:ss:SSS"), dp2);
+
+                        }
                         break;
                     default:
                         break;
