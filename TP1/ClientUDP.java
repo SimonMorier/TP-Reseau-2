@@ -26,7 +26,7 @@ public class ClientUDP {
             Scanner scanner = new Scanner(System.in);
 
             while (true) {
-                System.out.print("send udp packet");
+                System.out.print("Entrez votre commande : \n");
                 String message = scanner.nextLine();
                 ClientUDP.send(message, client);
 
@@ -34,8 +34,13 @@ public class ClientUDP {
                 DatagramPacket responsePacket = ClientUDP.receive(client);
                 String response = new String(responsePacket.getData(), 0, responsePacket.getLength());
                 System.out.println("Le serveur a répondu : " + response);
-
             }
+
+         
+
+           
+
+          
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
